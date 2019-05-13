@@ -13,7 +13,14 @@ Switch_dictionary= {
     "device_type": "cisco_ios",
     "host": "hostname",
     },
-
+     "sample_switch_2":{
+    "ip": "ip add",
+    "username": "username",
+    "password": password,
+    "device_type": "cisco_ios",
+    "host": "hostname",
+    }
+}
 
 for k, v in CCL_Switches.items()  :
     hostname= Switch_dictionary[k]['host']
