@@ -1,0 +1,39 @@
+
+##This has the function to clean Excel spreadsheets and convert them into nested dictionaries that netmiko will accept. ##
+import numpy as np
+import pandas as pd
+
+
+def clean_Excel():
+    #Get the file path and sheet from user so that I can re-use this function
+    file= input("Please copy the file path for the excel sheet")
+    sheet= input("What is the sheet name?")
+    #quick check to make sure that I entered the right information
+    print("File: " + file+ " Sheet: " +sheet)
+    data= {}
+    #Use pandas to pull the formatted sheet from Excel 
+    with pd.ExcelFile(file) as xlsx:
+           data['write']= pd.read_excel(xlsx, sheet, index_col="a")
+           #Formatting is important here; each switch is a column and the data are ROWS. make the first column and row have an a for easier formatting.
+    
+    ##Make main dictionary that holds the each switch
+    Switches={}
+    #The subdictionaries(Each host is its own dictionary within the main dictionary)
+    Switches['hosts']={}
+   
+    for k, v in data['write'].items():
+       hostname= data['write'][k][0]
+       ip=data['write'][k][2]
+       username= 'cwadmin'
+       password='cisco'
+       device_type='cisco_ios'
+       Switches['hosts'].update({hostname:{'host':hostname, 'ip':ip, 'username':'cwadmin', 'password':'cisco', 'device_type':'cisco_ios'}})
+ 
+       print(Switches['hosts'].items())
+       ##Save dictonary as text file for later use 
+       file_name= input("What would you like to name the file?")
+       f= open(f"{file_name}.txt", "w")
+       f.write((str(Switches['hosts'])))
+       f.close()
+       return Switches['hosts']
+
