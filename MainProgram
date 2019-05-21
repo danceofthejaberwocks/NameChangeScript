@@ -1,0 +1,22 @@
+import NameChangeScript
+from NameChangeScript import name_change 
+from run_pandas import clean_Excel
+
+print("Welcome to NetAutomation Bot")
+test= {}
+menu= True
+#allows you to clean a sheet and then go back and execute commands. 
+while menu== True:
+    answer=str(input("What do you want to do? \n\r A. Import an excel sheet of hardware\n\r B.Execute commands\n\r C. Exit"))
+    #This sanitizes user input so they can enter a lower or upper case letter
+    userInput= answer.upper()
+    
+    if userInput== "A":
+        clean_Excel(test)
+    elif userInput=="B": 
+        NameChangeScript.name_change(test)
+    else:
+        print("Goodbye")
+        menu==False
+        break
+   
