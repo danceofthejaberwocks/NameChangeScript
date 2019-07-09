@@ -3,9 +3,13 @@
 import numpy as np
 import pandas as pd
 
-final= {}
-final['hosts'] = {}
+
+
 def clean_Excel():
+    
+    test={}
+
+    test['hosts']= {}
     #Get the file path and sheet from user so that I can re-use this function
     file= input("Please copy the file path for the excel sheet")
     sheet= input("What is the sheet name?")
@@ -20,9 +24,6 @@ def clean_Excel():
     ##Make main dictionary that holds the each switch
     #The subdictionaries(Each host is its own dictionary within the main dictionary)
 
-    test={}
-
-    test['hosts']= {}
    
     for k, v in data['write'].items():
        hostname= data['write'][k][0]
@@ -33,11 +34,17 @@ def clean_Excel():
        test['hosts'].update({hostname:{'host':hostname, 'ip':ip, 'username':'cwadmin', 'password':'cisco', 'device_type':'cisco_ios'}})
  
        print(test['hosts'].items())
-       ##I commented out the file saving portion so that it will just pass the dictionary to NameChangeScript. I may add this back as an 
-      # option later but it is not currently in use
-   # file_name= input("What would you like to name the file?")
-   # f= open(f"{file_name}.txt", "w")
-   # f.write((str(test['hosts'])))
-   # f.close()
+
+    file_save= input("Do you want to save this hardware list? Y or N")
+
+    if file_save.upper()=="Y": 
+        ##Save dictonary as text file for later use 
+         file_name= input("What would you like to name the file?")
+         f= open(f"{file_name}.txt", "w")
+         f.write(("class "+ f"{file_name}"+ "(object):"+ f"\n\t{file_name}= "+ str(test['hosts'])))
+         f.close()
+    else:
+         return test['hosts']
+    
     return test['hosts']
    
