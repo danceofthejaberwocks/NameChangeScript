@@ -1,5 +1,5 @@
 from netmiko import Netmiko
-from ssh2 import *
+from run_pandas import *
 
 def name_change():
 ##Loop over the nested dictionary (that should be its own class, just for tidier files.) Once its looped define the host name and 
@@ -9,6 +9,8 @@ def name_change():
    
     command=[]
     getCommands= True
+    items={}
+    items['hosts']= {}
    
     while getCommands==True: 
         getInput=input("Would you like to enter a command? Y or N")
@@ -19,19 +21,21 @@ def name_change():
         else: 
             getCommands==False
             break
-    print(command)   
-    for k, v in ssh2.ssh2.items():
-        hostname=ssh2.ssh2[k]['host']
+    items['hosts']=clean_Excel()
+    print(items['hosts'])
+    print()
+    for k in items['hosts']:
+        hostname=items['hosts'][k]['host']
         print (hostname)
         
-      #  commands = ["banner motd ~\n\tThis is a secure site.\n\tOnly authorized users allowed.\n\t"+
-       #         "For access please contact\n\tRockwood School District Technical Support."
-        #        f"\n\tEE \n\t"+ hostname.replace('ECE', 'EE')+"\n\t5/21/2019\r ~",
-         #       "hostname "+ hostname.replace('ECE', 'EE'),
-          #      "do wr me"]
+        #commands = ["banner motd ~\n\tThis is a secure site.\n\tOnly authorized users allowed.\n\t"+
+         #       "For access please contact\n\tRockwood School District Technical Support."
+          #      f"\n\tEE \n\t"+ hostname.replace('ECE', 'EE')+"\n\t5/21/2019\r ~",
+           #     "hostname "+ hostname.replace('ECE', 'EE'),
+            #    "do wr me"]
         #connect to the switch using Netmiko. It is using k for key so it will go from 0 to the end for each entry
         try:
-            net_connect= Netmiko(**ssh2.ssh2[k])
+            net_connect= Netmiko(**items['hosts'][k])
             print(net_connect.find_prompt())
         #Send the commands as previously defined to the switch. This is from Netmiko
             output = net_connect.send_config_set(command)
@@ -39,6 +43,6 @@ def name_change():
             print (output)
             print()
         except Exception:
-            print(hostname.capitalize()+ " could not be reached")
-            continue
+           print(hostname.capitalize()+ " could not be reached")
+           continue
     
