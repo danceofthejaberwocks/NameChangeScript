@@ -33,10 +33,11 @@ def clean_Excel():
        test['hosts'].update({hostname:{'host':hostname, 'ip':ip, 'username':'cwadmin', 'password':'cisco', 'device_type':'cisco_ios'}})
  
        print(test['hosts'].items())
-       ##Save dictonary as text file for later use 
-    file_name= input("What would you like to name the file?")
-    f= open(f"{file_name}.txt", "w")
-    f.write((str(test['hosts'])))
-    f.close()
-    return test
+       ##I commented out the file saving portion so that it will just pass the dictionary to NameChangeScript. I may add this back as an 
+      # option later but it is not currently in use
+   # file_name= input("What would you like to name the file?")
+   # f= open(f"{file_name}.txt", "w")
+   # f.write((str(test['hosts'])))
+   # f.close()
+    return test['hosts']
    
